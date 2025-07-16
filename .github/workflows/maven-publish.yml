@@ -46,7 +46,9 @@ jobs:
             -Dversion=0.0.1-SNAPSHOT \
             -Dpackaging=war \
             -DrepositoryId=github \
-            -Durl=https://maven.pkg.github.com/Fadgiras/MavenTestCI
+            -Durl=https://maven.pkg.github.com/Fadgiras/MavenTestCI \
+            -DgeneratePom=false \
+            -Dchecksum=false
         else
           echo "No WAR file found in target directory"
           exit 1
