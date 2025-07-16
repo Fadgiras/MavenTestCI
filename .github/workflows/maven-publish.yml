@@ -27,6 +27,14 @@ jobs:
         server-username: GITHUB_ACTOR
         server-password: GITHUB_TOKEN
 
+    - name: Extract version from POM
+      id: version
+      run: |
+        cd ${{ github.workspace }}/demo
+        VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+        echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+        echo "Extracted version from POM: $VERSION"
+
     - name: Build with Maven
       run: cd ${{ github.workspace }}/demo && mvn -B package --file pom.xml
 
@@ -43,7 +51,7 @@ jobs:
             -Dfile="$warFile" \
             -DgroupId=com.fadgiras \
             -DartifactId=demo \
-            -Dversion=0.0.1-SNAPSHOT \
+            -Dversion=${{ steps.version.outputs.VERSION }} \
             -Dpackaging=war \
             -DrepositoryId=github \
             -Durl=https://maven.pkg.github.com/Fadgiras/MavenTestCI \
