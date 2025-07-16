@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
   <parent>
     <artifactId>demo</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
     <groupId>com.fadgiras</groupId>
+    <version>0.0.2-SNAPSHOT</version>
   </parent>
 
   <groupId>com.fadgiras</groupId>
-  <artifactId>dummyModule</artifactId>
+  <artifactId>warBuilder</artifactId>
+  <packaging>war</packaging>
 
-  <name>dummyModule</name>
+  <name>warBuilder</name>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
@@ -34,6 +33,32 @@
   </dependencyManagement>
 
   <dependencies>
+    <!-- Include all other modules -->
+    <dependency>
+      <groupId>com.fadgiras</groupId>
+      <artifactId>dummyModule</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.fadgiras</groupId>
+      <artifactId>web</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    
+    <!-- Spring Boot dependencies (inherited from parent) -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-tomcat</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    
+    <!-- Test dependencies -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -48,13 +73,13 @@
   </dependencies>
 
   <build>
+    <finalName>test-Build</finalName>
     <plugins>
-      <!-- Explicitly exclude Spring Boot plugin for this module -->
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
-          <skip>true</skip>
+          <mainClass>com.fadgiras.WarBuilderApplication</mainClass>
         </configuration>
       </plugin>
     </plugins>
@@ -98,6 +123,17 @@
         <plugin>
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.6.1</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-war-plugin</artifactId>
+          <version>3.3.2</version>
+        </plugin>
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <configuration>
+            <mainClass>com.fadgiras.WarBuilderApplication</mainClass>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
