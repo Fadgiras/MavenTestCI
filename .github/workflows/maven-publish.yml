@@ -1,5 +1,4 @@
-# This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
-# For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
+# This workflow will build a package using Maven and then upload the WAR as a release asset
 
 name: Maven Package
 
@@ -13,7 +12,7 @@ jobs:
 
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
 
     steps:
@@ -23,9 +22,6 @@ jobs:
       with:
         java-version: '21'
         distribution: 'temurin'
-        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-        server-username: GITHUB_ACTOR
-        server-password: GITHUB_TOKEN
 
     - name: Extract version from POM
       id: version
@@ -35,31 +31,29 @@ jobs:
         echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
         echo "Extracted version from POM: $VERSION"
 
+    - name: Run Maven tests
+      run: cd ${{ github.workspace }}/demo && mvn -B test --file pom.xml
+
     - name: Build with Maven
       run: cd ${{ github.workspace }}/demo && mvn -B package --file pom.xml
 
-    - name: List target directory contents
-      run: cd ${{ github.workspace }}/demo && ls -la target/
-
-    - name: Publish to GitHub Packages Apache Maven
-      run: |
-        cd ${{ github.workspace }}/demo
-        warFile=$(find target/ -name "*.war" | head -1)
-        if [ -n "$warFile" ]; then
-          echo "Found WAR file: $warFile"
-          mvn deploy:deploy-file \
-            -Dfile="$warFile" \
-            -DgroupId=com.fadgiras \
-            -DartifactId=demo \
-            -Dversion=${{ steps.version.outputs.VERSION }} \
-            -Dpackaging=war \
-            -DrepositoryId=github \
-            -Durl=https://maven.pkg.github.com/Fadgiras/MavenTestCI \
-            -DgeneratePom=false \
-            -Dchecksum=false
-        else
-          echo "No WAR file found in target directory"
-          exit 1
-        fi
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ steps.version.outputs.VERSION }}-${{ github.run_number }}
+        release_name: Release v${{ steps.version.outputs.VERSION }}-${{ github.run_number }}
+        draft: false
+        prerelease: false
+
+    - name: Upload WAR Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ${{ github.workspace }}/demo/target/demo-${{ steps.version.outputs.VERSION }}.war
+        asset_name: demo-${{ steps.version.outputs.VERSION }}.war
+        asset_content_type: application/java-archive
