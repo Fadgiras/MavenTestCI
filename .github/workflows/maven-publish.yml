@@ -29,6 +29,6 @@ jobs:
       run: cd ${{ github.workspace }}/demo && mvn -B package --file pom.xml
 
     - name: Publish to GitHub Packages Apache Maven
-      run: cd ${{ github.workspace }}/demo && mvn deploy
+      run: cd ${{ github.workspace }}/demo && mvn deploy:deploy-file -Dfile=target/demo-0.0.1-SNAPSHOT.war
       env:
         GITHUB_TOKEN: ${{ github.token }}
