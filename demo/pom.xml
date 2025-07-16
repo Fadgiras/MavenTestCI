@@ -8,25 +8,12 @@
 		<version>3.5.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
+	<groupId>com.fadgiras</groupId>
 	<artifactId>demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>demo</name>
+	<name>demoCI</name>
 	<description>Demo project for Spring Boot</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
 	<properties>
 		<java.version>21</java.version>
 	</properties>
