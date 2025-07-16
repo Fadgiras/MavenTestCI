@@ -11,7 +11,7 @@ on:
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
@@ -31,18 +31,25 @@ jobs:
       run: cd ${{ github.workspace }}/demo && mvn -B package --file pom.xml
 
     - name: List target directory contents
-      run: cd ${{ github.workspace }}/demo && dir target
+      run: cd ${{ github.workspace }}/demo && ls -la target/
 
     - name: Publish to GitHub Packages Apache Maven
       run: |
         cd ${{ github.workspace }}/demo
-        $warFile = Get-ChildItem target\*.war | Select-Object -First 1
-        if ($warFile) {
-          Write-Output "Found WAR file: $($warFile.Name)"
-          mvn deploy:deploy-file -Dfile=$($warFile.FullName) -DgroupId=com.fadgiras -DartifactId=demo -Dversion=0.0.1-SNAPSHOT -Dpackaging=war -DrepositoryId=github -Durl=https://maven.pkg.github.com/Fadgiras/MavenTestCI
-        } else {
-          Write-Error "No WAR file found in target directory"
+        warFile=$(find target/ -name "*.war" | head -1)
+        if [ -n "$warFile" ]; then
+          echo "Found WAR file: $warFile"
+          mvn deploy:deploy-file \
+            -Dfile="$warFile" \
+            -DgroupId=com.fadgiras \
+            -DartifactId=demo \
+            -Dversion=0.0.1-SNAPSHOT \
+            -Dpackaging=war \
+            -DrepositoryId=github \
+            -Durl=https://maven.pkg.github.com/Fadgiras/MavenTestCI
+        else
+          echo "No WAR file found in target directory"
           exit 1
-        }
+        fi
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
