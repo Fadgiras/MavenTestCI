@@ -9,7 +9,7 @@ class DemoApplicationTests {
 
 	@Test
 	void contextLoads() {
-		Assertions.assertTrue(true, "Context should load successfully");
+		Assertions.assertTrue(false, "Context should load successfully");
 	}
 
 	@Test
