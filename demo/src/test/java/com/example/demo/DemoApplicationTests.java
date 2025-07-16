@@ -12,4 +12,11 @@ class DemoApplicationTests {
 		Assertions.assertTrue(true, "Context should load successfully");
 	}
 
+	@Test
+	void sampleTest() {
+		int expected = 5;
+		int actual = 2 + 3;
+		Assertions.assertEquals(expected, actual, "2 + 3 should equal 5");
+	}
+
 }
