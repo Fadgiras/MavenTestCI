@@ -34,3 +34,7 @@ build/
 
 ### Maven ###
 .mvn/
+
+### Environment Variables ###
+.env
+.env.*
