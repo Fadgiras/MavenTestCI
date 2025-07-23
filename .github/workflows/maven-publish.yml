@@ -19,10 +19,12 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Set up env file
+      env:
+        FINESS_URL: ${{ vars.FINESS_URL }}
       run: |
+        echo $FINESS_URL 
         touch ${{ github.workspace }}/demo/.env
-        echo ${{vars.FINESS_URL}}
-        echo "FINESS_URL=${{ vars.FINESS_URL }}" >> ${{ github.workspace }}/demo/.env
+        echo "FINESS_URL=${FINESS_URL}" >> ${{ github.workspace }}/demo/.env
 
     - name: Set up JDK 21
       uses: actions/setup-java@v4
