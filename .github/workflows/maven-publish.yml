@@ -37,6 +37,9 @@ jobs:
         echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
         echo "Extracted version from POM: $VERSION"
 
+    - name: Clean up old builds
+      run: cd ${{ github.workspace }}/demo && mvn -B clean --file pom.xml
+
     - name: Run Maven tests
       run: cd ${{ github.workspace }}/demo && mvn -B test --file pom.xml
 
