@@ -54,13 +54,9 @@
 
   <build>
     <plugins>
-      <!-- Explicitly exclude Spring Boot plugin for this module -->
       <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>properties-maven-plugin</artifactId>
       </plugin>
     </plugins>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
@@ -74,6 +70,13 @@
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>
           <version>3.3.1</version>
+          <configuration>
+            <encoding>UTF-8</encoding>
+            <delimiters>
+              <delimiter>@</delimiter>
+            </delimiters>
+            <useDefaultDelimiters>false</useDefaultDelimiters>
+          </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>

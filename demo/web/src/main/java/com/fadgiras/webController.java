@@ -2,16 +2,20 @@ package com.fadgiras;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @PropertySource("classpath:web.properties")
-public class webController {
-    
-    @Value("${finess.url}")
+public class WebController {
+
+    public WebController(Environment environment) {
+        this.finessUrl = environment.getProperty("finess.url");
+        System.out.println("finess.url in WebController: " + finessUrl != null ? finessUrl : "Property not set");
+    }
+
     private String finessUrl;
 
     @GetMapping("/test")

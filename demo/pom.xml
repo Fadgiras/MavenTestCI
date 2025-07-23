@@ -54,39 +54,43 @@
   </dependencies>
 
   <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <version>3.1.4</version>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>properties-maven-plugin</artifactId>
-        <version>1.2.1</version>
-        <executions>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>3.3.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>properties-maven-plugin</artifactId>
+          <version>1.2.1</version>
+          <executions>
             <execution>
-                <phase>initialize</phase>
-                <goals>
-                    <goal>read-project-properties</goal>
-                </goals>
-                <configuration>
-                    <files>
-                        <!-- Do not use project.basedir here, since its a multi module project we have to use the parent's dir -->
-                        <file>${maven.multiModuleProjectDirectory}/.env</file>
-                    </files>
-                </configuration>
+              <phase>initialize</phase>
+              <goals>
+                <goal>read-project-properties</goal>
+              </goals>
+              <configuration>
+                <files>
+                  <file>${maven.multiModuleProjectDirectory}/.env</file>
+                </files>
+              </configuration>
             </execution>
-        </executions>
-      </plugin>
-    </plugins>                
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
 
   <modules>
     <module>dummyModule</module>
-    <module>warBuilder</module>
     <module>web</module>
+    <module>warBuilder</module>
     <module>springLauncher</module>
   </modules>
-
 </project>

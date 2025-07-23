@@ -75,6 +75,27 @@
   <build>
     <finalName>test-Build</finalName>
     <plugins>
+      <!-- Activer le plugin properties pour avoir accès aux variables du .env -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>properties-maven-plugin</artifactId>
+      </plugin>
+      
+      <!-- Configuration du plugin WAR pour inclure et filtrer les ressources du module web -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.3.2</version>
+        <configuration>
+          <webResources>
+            <resource>
+              <directory>src/main/resources</directory>
+              <filtering>true</filtering>
+            </resource>
+          </webResources>
+        </configuration>
+      </plugin>
+      
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
