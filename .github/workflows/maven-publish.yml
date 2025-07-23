@@ -44,7 +44,7 @@ jobs:
       run: cd ${{ github.workspace }}/demo && mvn -B test --file pom.xml
 
     - name: Build with Maven
-      run: cd ${{ github.workspace }}/demo && mvn -B package --file pom.xml
+      run: cd ${{ github.workspace }}/demo && mvn -B install --file pom.xml
 
     - name: Create Release
       uses: softprops/action-gh-release@v1
