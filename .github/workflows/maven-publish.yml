@@ -21,6 +21,7 @@ jobs:
     - name: Set up env file
       run: |
         touch ${{ github.workspace }}/demo/.env
+        echo ${{vars.FINESS_URL}}
         echo "FINESS_URL=${{ vars.FINESS_URL }}" >> ${{ github.workspace }}/demo/.env
 
     - name: Set up JDK 21
