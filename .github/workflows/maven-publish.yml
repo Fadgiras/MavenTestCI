@@ -22,7 +22,7 @@ jobs:
       env:
         FINESS_URL: ${{ vars.FINESS_URL }}
       run: |
-        echo "$FINESS_URL"
+        echo "FINESS_URL is: $FINESS_URL"
         touch ${{ github.workspace }}/demo/.env
         echo "FINESS_URL=${FINESS_URL}" >> ${{ github.workspace }}/demo/.env
 
