@@ -22,12 +22,10 @@ jobs:
     - name: Set up env file
       env:
         FINESS_URL: ${{ vars.FINESS_URL }}
-        TEST_SECRET: ${{ secrets.TEST_SECRET }}
       run: |
         echo "FINESS_URL is: $FINESS_URL"
-        echo "TEST_SECRET : ${TEST_SECRET}"
         touch ${{ github.workspace }}/demo/.env
-        echo "FINESS_URL=${TEST_SECRET}" >> ${{ github.workspace }}/demo/.env
+        echo "FINESS_URL=${FINESS_URL}" >> ${{ github.workspace }}/demo/.env
 
     - name: Set up JDK 21
       uses: actions/setup-java@v4
