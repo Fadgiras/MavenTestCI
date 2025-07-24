@@ -1,11 +1,13 @@
 package com.fadgiras;
 
+import com.fadgiras.config.RestClientConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestClient;
 
 @RestController
 @PropertySource("classpath:web.properties")
@@ -28,12 +30,16 @@ public class WebController {
         return "This is from the web module's webController!";
     }
 
-    @GetMapping("/finess")
+    @GetMapping(value = "/finess", produces = "application/json")
     public String finess(@RequestParam(value = "query", required = false) String query) {
         String urlToQuery = finessUrl;
         if (query != null && !query.isEmpty()) {
             urlToQuery = finessUrl + "?query=" + query;
+            System.err.println("Querying Finess with: " + urlToQuery);
         }
-        return "Finess data endpoint! " + urlToQuery;
+        RestClient restClient = RestClientConfig.restClient();
+        return restClient.get()
+                                    .uri(urlToQuery)
+                                    .retrieve().body(String.class);
     }
 }

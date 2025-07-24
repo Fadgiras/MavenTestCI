@@ -8,9 +8,8 @@ import org.springframework.web.client.RestClient;
 public class RestClientConfig {
     
     @Bean
-    public RestClient restClient() {
+    public static RestClient restClient() {
         return RestClient.builder()
-            .baseUrl("https://jsonplaceholder.typicode.com") // URL d'exemple pour test
             .defaultHeader("Content-Type", "application/json")
             .defaultHeader("User-Agent", "Spring-Boot-App")
             .build();
