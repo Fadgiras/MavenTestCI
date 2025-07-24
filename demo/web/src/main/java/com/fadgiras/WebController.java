@@ -4,6 +4,7 @@ import com.fadgiras.config.RestClientConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +12,7 @@ import org.springframework.web.client.RestClient;
 
 @RestController
 @PropertySource("classpath:web.properties")
+@CrossOrigin(origins = "http://localhost:5173")
 public class WebController {
 
     public WebController(Environment environment) {
@@ -34,7 +36,7 @@ public class WebController {
     public String finess(@RequestParam(value = "query", required = false) String query) {
         String urlToQuery = finessUrl;
         if (query != null && !query.isEmpty()) {
-            urlToQuery = finessUrl + "?query=" + query;
+            urlToQuery = finessUrl + "?" + query;
             System.err.println("Querying Finess with: " + urlToQuery);
         }
         RestClient restClient = RestClientConfig.restClient();
